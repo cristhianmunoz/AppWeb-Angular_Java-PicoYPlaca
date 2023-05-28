@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { ConsultaService } from './consulta.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import axios from "axios";
 
 interface ConsultaResponse {
   status: string;
@@ -16,39 +18,60 @@ export class ConsultaComponent {
   fecha: string = '';
   resultado: string = '';
 
-  constructor(private consultaService: ConsultaService) { }
+  @ViewChild('modalContent') modalContent: any;
+
+  constructor(private consultaService: ConsultaService, private modalService: NgbModal) {}
+
+  openModal() {
+    this.modalService.open(this.modalContent);
+  }
+  openModal2(content:any) {
+    this.modalService.open(content);
+  }
+
+  closeModal(modal: any) {
+    modal.dismiss('Cross click');
+  }
+
+  limpiarFormulario() {
+    // Restablecer los valores del formulario a su estado inicial
+    this.placa = '';
+    this.fecha = '';
+  }
 
   submitForm() {
     // Validación de la fecha
     const fechaActual = new Date();
     const fechaIngresada = new Date(this.fecha);
 
+    //Notificación si la fecha es de días anteriores
     if (fechaIngresada < fechaActual) {
       alert('La fecha ingresada debe ser igual o posterior a la fecha actual.');
       return;
     }
 
-    alert(this.fecha)
-    // Envío de la solicitud al backend
-    this.consultaService.realizarConsulta(this.placa, this.fecha)
-      .subscribe((response:any) => {
-        const consultaResponse: ConsultaResponse = response as ConsultaResponse;
+    //Declaramos la variable en la que va a guardar el mensaje
+    var message;
 
-        // Manejo de la respuesta del backend
-        if (consultaResponse.status === 'OK') {
-          this.resultado = 'El vehículo con placa ' + this.placa + ' puede circular en la fecha ' + this.fecha;
-          alert(this.resultado);
-        } if (consultaResponse.status === 'BAD_REQUEST') {
-          this.resultado = 'El vehículo con placa ' + this.placa + ' no puede circular en la fecha ' + this.fecha;
-          alert(this.resultado);
-        }
-      }, error => {
-        // Manejo de errores de la solicitud
-        this.resultado = 'Error al realizar la consulta';
-        alert(this.resultado);
+    // Envío de la solicitud al backend utilizando Axios
+    axios.post('http://localhost:8080/api/consulta', {
+      placa: this.placa,
+      fecha: this.fecha
+    })
+      .then(response => {
+        // Imprime la respuesta en la consola
+        console.log(response.data);
+        message= String(response.data);
+        this.resultado=message;
+
+        this.openModal();
+
+      })
+      .catch(error => {
+        console.error(error); // Imprime el error en la consola
+        this.openModal2(error)
       });
+
+
   }
 }
-
-
-//alert(this.fecha);

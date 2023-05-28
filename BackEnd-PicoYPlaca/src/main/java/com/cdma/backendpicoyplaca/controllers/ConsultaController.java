@@ -16,6 +16,7 @@ public class ConsultaController {
 
     @PostMapping("/api/consulta")
     public ResponseEntity<String> realizarConsulta(@RequestBody ConsultaRequest request) {
+        System.out.println(request.getPlaca());
         String placa = request.getPlaca();
         String fechaString = request.getFecha();
 
@@ -27,7 +28,7 @@ public class ConsultaController {
         if (puedeCircular) {
             return new ResponseEntity<>("El vehículo con placa " + placa + " puede circular en la fecha " + fechaString, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("El vehículo con placa " + placa + " no puede circular en la fecha " + fechaString, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("El vehículo con placa " + placa + " NO puede circular en la fecha " + fechaString, HttpStatus.OK);
         }
     }
 
@@ -35,9 +36,9 @@ public class ConsultaController {
         // Obtiene el último dígito de la placa
         int ultimoDigito = Integer.parseInt(placa.substring(placa.length() - 1));
 
-        // Verifica si es sábado, domingo o feriado
+        // Verifica si es sábado, domingo
         boolean esFinDeSemanaOFeriado = fecha.getDayOfWeek().getValue() >= 6; // 6 representa sábado y 7 representa domingo
-        // Aquí puedes agregar la lógica para verificar si es feriado
+
 
         // Verifica si está dentro de los horarios de restricción
         LocalTime hora = fecha.toLocalTime();
@@ -48,16 +49,20 @@ public class ConsultaController {
         if (!esFinDeSemanaOFeriado && estaEnHorarioRestriccion) {
             switch (fecha.getDayOfWeek()) {
                 case MONDAY:
-                    return ultimoDigito == 1 || ultimoDigito == 2;
+                    System.out.println(placa+" Restricción => 1,2");
+                    if(ultimoDigito == 1 || ultimoDigito == 2){return false;}else{return true;}
                 case TUESDAY:
-                    return ultimoDigito == 3 || ultimoDigito == 4;
+                    System.out.println(placa+" Restricción => 3,4");
+                    if(ultimoDigito == 3 || ultimoDigito == 4){return false;}else{return true;}
                 case WEDNESDAY:
-                    return ultimoDigito == 5 || ultimoDigito == 6;
+                    System.out.println(placa+" Restricción => 5,6");
+                    if(ultimoDigito == 5 || ultimoDigito == 6){return false;}else{return true;}
                 case THURSDAY:
-                    System.out.println(ultimoDigito+"siiiuuuu8");
-                    return ultimoDigito == 7 || ultimoDigito == 8;
+                    System.out.println(placa+" Restricción => 7,8");
+                    if(ultimoDigito == 7 || ultimoDigito == 8){return false;}else{return true;}
                 case FRIDAY:
-                    return ultimoDigito == 9 || ultimoDigito == 0;
+                    System.out.println(placa+" Restricción => 9,0");
+                    if(ultimoDigito == 9 || ultimoDigito == 0){return false;}else{return true;}
                 default:
                     return true; // Otros días de la semana no tienen restricción
             }

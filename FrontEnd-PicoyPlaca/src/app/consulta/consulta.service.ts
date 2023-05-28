@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import axios from "axios";
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +10,24 @@ export class ConsultaService {
 
   constructor(private http: HttpClient) { }
 
-  realizarConsulta(placa: string, fecha: string) {
+  async realizarConsulta(placa: string, fecha: string) {
+    let message =""
 
-    const requestData = {
+    axios.post('http://localhost:8080/api/consulta', {
       placa: placa,
       fecha: fecha
-    };
-    console.log(requestData);
+    })
+      .then(response => {
+        // Imprime la respuesta en la consola
+        console.log(response.data);
+        message= String(response.data);
+        alert(message)
 
-    return this.http.post(this.apiUrl, requestData);
+      })
+      .catch(error => {
+        console.error(error); // Imprime el error en la consola
+      });
+
+    return message;
   }
 }

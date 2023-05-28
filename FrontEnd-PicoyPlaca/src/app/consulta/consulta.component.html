@@ -1,5 +1,6 @@
 <div>
-  <h2>Consulta de Pico y Placa</h2>
+  <br>
+  <H1>Validación de Circulación</H1>
 
   <form (ngSubmit)="submitForm()" #consultaForm="ngForm">
     <div class="form-group">
@@ -10,9 +11,26 @@
       <label for="fecha">Fecha actual:</label>
       <input type="datetime-local" class="form-control" id="fecha" name="fecha" [(ngModel)]="fecha" required>
     </div>
-
-    <button type="submit" class="btn btn-primary">Realizar consulta</button>
+    <div></div>
+    <br>
+    <div class="form-group d-flex justify-content-center align-items-center">
+      <button type="submit" size="lg" class="btn btn-outline-success text-center mx-3">Realizar consulta</button>
+      <button type="button" class="btn btn-danger text-center mx-3" (click)="limpiarFormulario()">Limpiar Campos</button>
+    </div>
   </form>
+
+
+  <ng-template #modalContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Respuesta de la consulta</h4>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal(modal)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>{{ resultado }}</p>
+    </div>
+  </ng-template>
 
 </div>
 
