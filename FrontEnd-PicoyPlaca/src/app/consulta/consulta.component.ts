@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import { ConsultaService } from './consulta.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import axios from "axios";
 
 interface ConsultaResponse {
@@ -20,7 +21,14 @@ export class ConsultaComponent {
 
   @ViewChild('modalContent') modalContent: any;
 
-  constructor(private consultaService: ConsultaService, private modalService: NgbModal) {}
+  formulario: FormGroup;
+
+  constructor(private consultaService: ConsultaService, private modalService: NgbModal, private formBuilder: FormBuilder) {
+    this.formulario = this.formBuilder.group({
+      placa: ['', [Validators.required, Validators.pattern(/^[A-Z]{3}-\d{3}$/)]],
+      fecha: ['', Validators.required]
+    });
+  }
 
   openModal() {
     this.modalService.open(this.modalContent);

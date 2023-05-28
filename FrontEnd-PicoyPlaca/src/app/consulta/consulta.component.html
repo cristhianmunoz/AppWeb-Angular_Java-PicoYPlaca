@@ -6,10 +6,13 @@
     <div class="form-group">
       <label for="placa">Placa del vehículo:</label>
       <input type="text" class="form-control" id="placa" name="placa" [(ngModel)]="placa" required>
+<!--      <div *ngIf="formulario.get('placa').hasError('required')" class="text-danger">El campo placa es requerido.</div>
+      <div *ngIf="formulario.get('placa').hasError('pattern')" class="text-danger">El formato de la placa no es válido (ejemplo: ABC-123).</div>-->
     </div>
     <div class="form-group">
       <label for="fecha">Fecha actual:</label>
       <input type="datetime-local" class="form-control" id="fecha" name="fecha" [(ngModel)]="fecha" required>
+<!--      <div ngIf="formulario.get('fecha').hasError('required')" class="text-danger">El campo fecha es requerido.</div>-->
     </div>
     <div></div>
     <br>
