@@ -50,19 +50,19 @@ public class ConsultaController {
             switch (fecha.getDayOfWeek()) {
                 case MONDAY:
                     System.out.println(placa+" Restricción => 1,2");
-                    if(ultimoDigito == 1 || ultimoDigito == 2){return false;}else{return true;}
+                    return ultimoDigito != 1 && ultimoDigito != 2;
                 case TUESDAY:
                     System.out.println(placa+" Restricción => 3,4");
-                    if(ultimoDigito == 3 || ultimoDigito == 4){return false;}else{return true;}
+                    return ultimoDigito != 3 && ultimoDigito != 4;
                 case WEDNESDAY:
                     System.out.println(placa+" Restricción => 5,6");
-                    if(ultimoDigito == 5 || ultimoDigito == 6){return false;}else{return true;}
+                    return ultimoDigito != 5 && ultimoDigito != 6;
                 case THURSDAY:
                     System.out.println(placa+" Restricción => 7,8");
-                    if(ultimoDigito == 7 || ultimoDigito == 8){return false;}else{return true;}
+                    return ultimoDigito != 7 && ultimoDigito != 8;
                 case FRIDAY:
                     System.out.println(placa+" Restricción => 9,0");
-                    if(ultimoDigito == 9 || ultimoDigito == 0){return false;}else{return true;}
+                    return ultimoDigito != 9 && ultimoDigito != 0;
                 default:
                     return true; // Otros días de la semana no tienen restricción
             }
